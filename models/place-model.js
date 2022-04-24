@@ -6,7 +6,7 @@ const filePath = path.join(
   'data', 'places.json'
 )
 
-const getProductsFromFile = callback => {
+const getPlacesFromFile = callback => {
   fs.readFile(filePath, (err, fileContent) => {
     if (err) {
       return callback([])
@@ -23,16 +23,17 @@ module.exports = class Place {
     this.category = category
   }
 
-  save() {
-    getProductsFromFile(products => {
+  save(callback) {
+    getPlacesFromFile(products => {
       products.push(this)
       fs.writeFile(filePath, JSON.stringify(products), err => {
         console.log(err)
       })
     })
+    callback()
   }
 
   static fetchAll(callback) {
-    getProductsFromFile(callback)
+    getPlacesFromFile(callback)
   }
 }
